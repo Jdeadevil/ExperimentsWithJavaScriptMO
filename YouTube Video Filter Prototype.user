@@ -15,6 +15,7 @@
     let newVideoList = [];
     let middleBox = document.querySelector("#primary > ytd-rich-grid-renderer");
     let middleContents = document.querySelector("#contents");
+    let chipsTabs = document.querySelectorAll("#chips > yt-chip-cloud-chip-renderer");
 
     let mainContainer = document.createElement("div");
     let formContainer = document.createElement("form");
@@ -23,42 +24,46 @@
     let arrayInput = document.createElement("input");
     let saveSettingsBtn = document.createElement("input");
     let settingsSavedText = document.createElement("p");
-    saveSettingsBtn.type = "button";
-    saveSettingsBtn.value = "Save Settings";
-    mainContainerHead.innerText = "Filter";
-    mainContainer.style.width = "100%";
-    mainContainer.style.margin = "0 9px 5px 9px";
-    mainContainer.style.padding = "0";
-    mainContainerHead.style.color = "#030303";
-    mainContainerHead.style.fontSize = "2rem";
-    mainContainerHead.style.fontWeight = "500";
-    mainContainerHead.style.lineHeight = "2.4rem";
-    arrayInput.style.width = "300px";
-    arrayInput.style.margin = "10px 0px 10px 0px";
-    arrayInput.style.display = "inline-block";
-    formContainer.style.fontFamily = "Roboto, Arial, sans-serif";
-    mainContainerDescription.style.display = "inline-block";
-    mainContainerDescription.style.marginLeft = "10px";
-    mainContainerDescription.style.fontSize = "16px";
-    mainContainerDescription.style.fontWeight = "500";
-    mainContainerDescription.style.lineHeight = "2.2rem";
-    mainContainerDescription.style.maxHeight = "4.4rem";
-    saveSettingsBtn.style.display = "block";
-    settingsSavedText.style.marginTop = "3px";
-    settingsSavedText.style.fontSize = "16px";
-    settingsSavedText.style.fontWeight = "500";
-    settingsSavedText.style.lineHeight = "2.2rem";
-    settingsSavedText.style.maxHeight = "4.4rem";
-    settingsSavedText.style.color = "#4CAF50";
 
-    middleContents.insertBefore(mainContainer, middleContents.childNodes[0]);
-    mainContainer.appendChild(formContainer)
-    formContainer.appendChild(mainContainerHead);
-    formContainer.appendChild(arrayInput);
-    formContainer.appendChild(mainContainerDescription);
-    mainContainerDescription.innerText = "Put in the keywords here, seperating them with a comma, and then press 'Save Settings'.";
-    formContainer.appendChild(saveSettingsBtn);
-    formContainer.appendChild(settingsSavedText);
+    function renderBtns() {
+
+        saveSettingsBtn.type = "button";
+        saveSettingsBtn.value = "Save Settings";
+        mainContainerHead.innerText = "Filter";
+        mainContainer.style.width = "100%";
+        mainContainer.style.margin = "0 9px 6px 9px";
+        mainContainer.style.padding = "0";
+        mainContainerHead.style.color = "#030303";
+        mainContainerHead.style.fontSize = "2rem";
+        mainContainerHead.style.fontWeight = "500";
+        mainContainerHead.style.lineHeight = "2.4rem";
+        arrayInput.style.width = "300px";
+        arrayInput.style.margin = "10px 0px 10px 0px";
+        arrayInput.style.display = "inline-block";
+        formContainer.style.fontFamily = "Roboto, Arial, sans-serif";
+        mainContainerDescription.style.display = "inline-block";
+        mainContainerDescription.style.marginLeft = "10px";
+        mainContainerDescription.style.fontSize = "16px";
+        mainContainerDescription.style.fontWeight = "500";
+        mainContainerDescription.style.lineHeight = "2.2rem";
+        mainContainerDescription.style.maxHeight = "4.4rem";
+        saveSettingsBtn.style.display = "block";
+        settingsSavedText.style.marginTop = "3px";
+        settingsSavedText.style.fontSize = "16px";
+        settingsSavedText.style.fontWeight = "500";
+        settingsSavedText.style.lineHeight = "2.2rem";
+        settingsSavedText.style.maxHeight = "4.4rem";
+        settingsSavedText.style.color = "#4CAF50";
+
+        middleContents.insertBefore(mainContainer, middleContents.childNodes[0]);
+        mainContainer.appendChild(formContainer)
+        formContainer.appendChild(mainContainerHead);
+        formContainer.appendChild(arrayInput);
+        formContainer.appendChild(mainContainerDescription);
+        mainContainerDescription.innerText = "Put in the keywords here, seperating them with a comma, and then press 'Save Settings'.";
+        formContainer.appendChild(saveSettingsBtn);
+        formContainer.appendChild(settingsSavedText);
+    }
 
     function mainFunction() {
 
@@ -97,6 +102,25 @@
 
     }
 
+    renderBtns();
+
     saveSettingsBtn.addEventListener("click", mainFunction);
+
+    chipsTabs.forEach(item => {
+        item.addEventListener('click', event => {
+            renderBtns();
+        })
+    })
+
+    //chipsTabs.addEventListener("click", renderBtns);
+
+    /*
+    const observer = new MutationObserver(function(mutations){
+        mutations.forEach(function(mutation){
+            if
+        })
+    });
+    observer.observe(chipsTabs, { subtree: true, attributes: true });
+    */
 
 })();
