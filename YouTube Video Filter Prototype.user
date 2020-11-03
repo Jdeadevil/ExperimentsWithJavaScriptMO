@@ -16,6 +16,8 @@
     let middleBox = document.querySelector("#primary > ytd-rich-grid-renderer");
     let middleContents = document.querySelector("#contents");
     let chipsTabs = document.querySelectorAll("#chips > yt-chip-cloud-chip-renderer");
+    let targetList = "";
+    let inputString = "";
 
     let mainContainer = document.createElement("div");
     let formContainer = document.createElement("form");
@@ -25,35 +27,35 @@
     let saveSettingsBtn = document.createElement("input");
     let settingsSavedText = document.createElement("p");
 
-    function renderBtns() {
+    saveSettingsBtn.type = "button";
+    saveSettingsBtn.value = "Save Settings";
+    mainContainerHead.innerText = "Filter";
+    mainContainer.style.width = "100%";
+    mainContainer.style.margin = "0 9px 6px 9px";
+    mainContainer.style.padding = "0";
+    mainContainerHead.style.color = "#030303";
+    mainContainerHead.style.fontSize = "2rem";
+    mainContainerHead.style.fontWeight = "500";
+    mainContainerHead.style.lineHeight = "2.4rem";
+    arrayInput.style.width = "300px";
+    arrayInput.style.margin = "10px 0px 10px 0px";
+    arrayInput.style.display = "inline-block";
+    formContainer.style.fontFamily = "Roboto, Arial, sans-serif";
+    mainContainerDescription.style.display = "inline-block";
+    mainContainerDescription.style.marginLeft = "10px";
+    mainContainerDescription.style.fontSize = "16px";
+    mainContainerDescription.style.fontWeight = "500";
+    mainContainerDescription.style.lineHeight = "2.2rem";
+    mainContainerDescription.style.maxHeight = "4.4rem";
+    saveSettingsBtn.style.display = "block";
+    settingsSavedText.style.marginTop = "3px";
+    settingsSavedText.style.fontSize = "16px";
+    settingsSavedText.style.fontWeight = "500";
+    settingsSavedText.style.lineHeight = "2.2rem";
+    settingsSavedText.style.maxHeight = "4.4rem";
+    settingsSavedText.style.color = "#4CAF50";
 
-        saveSettingsBtn.type = "button";
-        saveSettingsBtn.value = "Save Settings";
-        mainContainerHead.innerText = "Filter";
-        mainContainer.style.width = "100%";
-        mainContainer.style.margin = "0 9px 6px 9px";
-        mainContainer.style.padding = "0";
-        mainContainerHead.style.color = "#030303";
-        mainContainerHead.style.fontSize = "2rem";
-        mainContainerHead.style.fontWeight = "500";
-        mainContainerHead.style.lineHeight = "2.4rem";
-        arrayInput.style.width = "300px";
-        arrayInput.style.margin = "10px 0px 10px 0px";
-        arrayInput.style.display = "inline-block";
-        formContainer.style.fontFamily = "Roboto, Arial, sans-serif";
-        mainContainerDescription.style.display = "inline-block";
-        mainContainerDescription.style.marginLeft = "10px";
-        mainContainerDescription.style.fontSize = "16px";
-        mainContainerDescription.style.fontWeight = "500";
-        mainContainerDescription.style.lineHeight = "2.2rem";
-        mainContainerDescription.style.maxHeight = "4.4rem";
-        saveSettingsBtn.style.display = "block";
-        settingsSavedText.style.marginTop = "3px";
-        settingsSavedText.style.fontSize = "16px";
-        settingsSavedText.style.fontWeight = "500";
-        settingsSavedText.style.lineHeight = "2.2rem";
-        settingsSavedText.style.maxHeight = "4.4rem";
-        settingsSavedText.style.color = "#4CAF50";
+    function renderBtns() {
 
         middleContents.insertBefore(mainContainer, middleContents.childNodes[0]);
         mainContainer.appendChild(formContainer)
@@ -63,14 +65,22 @@
         mainContainerDescription.innerText = "Put in the keywords here, seperating them with a comma, and then press 'Save Settings'.";
         formContainer.appendChild(saveSettingsBtn);
         formContainer.appendChild(settingsSavedText);
+
+        saveSettingsBtn.addEventListener("click", mainFunction)
+
     }
 
     function mainFunction() {
 
-        let inputString = arrayInput.value;
-        let targetList = inputString.split(",");
+        inputString = arrayInput.value;
+        targetList = inputString.split(",");
 
         settingsSavedText.innerText = "Save successful: " + inputString.toString();
+
+        alert(inputString);
+        alert(targetList);
+        alert(inputString.toString());
+        alert(newVideoList);
 
         function iterate(item) {
             if (item.innerText !== "" || item.innerText !== null || item.innerText !== undefined) {
@@ -91,14 +101,14 @@
             }
         }
 
-        function sweepItems(item) {
-            middleContents.removeChild(item)
-        };
+
 
         videoList.forEach(iterate);
         console.log(newVideoList);
 
-        newVideoList.forEach(sweepItems);
+        newVideoList.forEach(function(item) {
+            middleContents.removeChild(item)
+        });
 
     }
 
@@ -106,21 +116,36 @@
 
     saveSettingsBtn.addEventListener("click", mainFunction);
 
-    chipsTabs.forEach(item => {
+    /* chipsTabs.forEach(item => {
         item.addEventListener('click', event => {
-            renderBtns();
+            let render = setInterval(function() {
+                renderBtns();
+                clearInterval(render);
+            }, 1000);
         })
     })
+    */
 
-    //chipsTabs.addEventListener("click", renderBtns);
+    // chipsTabs.addEventListener("click", renderBtns);
 
-    /*
     const observer = new MutationObserver(function(mutations){
-        mutations.forEach(function(mutation){
-            if
+        mutations.forEach(function(mutation){ // Create observer
+            if (mutation.type === 'attributes') { // Check Class is changed
+                let waitToClear = setInterval(function(){ // Wait until existing video thumbnails disappear (after changing tabs)
+                    let checkLoaded = setInterval(function(){ // every hundred miliseconds, check if a video thumbnail exists, then call RenderBtns function and then clearInterval
+                        if(document.querySelector("#contents > ytd-rich-item-renderer:nth-child(2)")){
+                            renderBtns();
+                            observer.disconnect();
+                            clearInterval(checkLoaded);
+                        };
+                    }, 100);
+                    clearInterval(waitToClear);
+                }, 200);
+            }
         })
     });
-    observer.observe(chipsTabs, { subtree: true, attributes: true });
-    */
+
+    observer.observe(document.querySelector("#chips"), { subtree: true, attributes: true, attributeOldValue: true});
+    
 
 })();
