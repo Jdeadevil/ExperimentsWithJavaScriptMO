@@ -1,0 +1,57 @@
+// ==UserScript==
+// @name         New Userscript
+// @namespace    http://tampermonkey.net/
+// @version      0.1
+// @description  try to take over the world!
+// @author       You
+// @match        https://www.google.com/search?q=us+election+votes+live+results
+// @grant        none
+// ==/UserScript==
+
+(function() {
+    'use strict';
+
+    let addEverythingUp = function(){
+        let numbers = [];
+        const usPopulation = 328200000;
+        let addTheseUp = document.querySelectorAll("#\\31  > table > tbody > tr > td:nth-child(5) > span");
+
+        addTheseUp.forEach(function(item) {
+            let strNumber = item.innerText;
+            strNumber = strNumber.replaceAll(',','');
+            let intNumber = parseInt(strNumber);
+            numbers.push(intNumber);
+        });
+
+        var sum = numbers.reduce(function(a, b) {
+            return a + b;
+        }, 0);
+
+        let totalSumContainer = document.querySelector("#\\31  > table > tbody > tr:nth-child(1) > th.Macaq.TKJs4 > span");
+        let percentVoted = sum / usPopulation;
+
+        percentVoted = percentVoted.toString().substr(2, 2);
+
+        totalSumContainer.innerText = "Candidates: " + percentVoted + "% of the country have voted!";
+
+        totalSumContainer.style.fontSize = "12px";
+        totalSumContainer.style.color = "#70757a";
+    }
+
+    addEverythingUp();
+
+    var target = document.querySelector("#_2PmlX9T-HYSCarmZvegF10 > div > div:nth-child(3) > div > div > div:nth-child(6)");
+
+    var observer = new MutationObserver(function(mutations) {
+        mutations.forEach(function(mutation) {
+            if(mutation.type === 'characterData'){
+                addEverythingUp();
+            };
+        });
+    });
+
+    var config = { characterData: true, subtree: true};
+
+    observer.observe(target, config);
+
+})();
