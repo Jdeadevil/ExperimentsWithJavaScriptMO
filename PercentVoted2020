@@ -32,7 +32,7 @@
 
         percentVoted = percentVoted.toString().substr(2, 2);
 
-        totalSumContainer.innerText = "Candidates: " + percentVoted + "% of the country have voted!";
+        totalSumContainer.innerText = "Candidates: It's estimated that " + percentVoted + "% of the country have voted!";
 
         totalSumContainer.style.fontSize = "12px";
         totalSumContainer.style.color = "#70757a";
